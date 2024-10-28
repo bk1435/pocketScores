@@ -31,7 +31,7 @@ class TeamAdapter(
         private val teamNameTextView: TextView = itemView.findViewById(R.id.teamNameTextView)
 
         fun bind(team: NFLTeam) {
-            teamNameTextView.text = team.displayName  // Ensure `displayName` exists in NFLTeam
+            teamNameTextView.text = team.displayName
         }
     }
 }

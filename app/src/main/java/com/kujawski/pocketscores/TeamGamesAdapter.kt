@@ -33,12 +33,12 @@ class TeamGamesAdapter(private val games: List<NFLGame>) : RecyclerView.Adapter<
             val homeTeamName = competition?.competitors?.getOrNull(0)?.team?.displayName ?: "N/A"
             val awayTeamName = competition?.competitors?.getOrNull(1)?.team?.displayName ?: "N/A"
 
-            // Set the text for the teams and scores, using default if data is missing
-            teamsTextView.text = itemView.context.getString(R.string.teams_vs, homeTeamName, awayTeamName)
-            scoreTextView.text = itemView.context.getString(R.string.score_format, "N/A")  // Update if actual score data is available
 
-            // Set a placeholder date or actual date if available
-            gameDateTextView.text = "N/A"  // Replace with actual game date if provided by the API
+            teamsTextView.text = itemView.context.getString(R.string.teams_vs, homeTeamName, awayTeamName)
+            scoreTextView.text = itemView.context.getString(R.string.score_format, "N/A")
+
+
+            gameDateTextView.text = "N/A"
         }
     }
 }

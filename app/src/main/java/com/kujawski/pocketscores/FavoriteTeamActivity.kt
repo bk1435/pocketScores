@@ -9,8 +9,6 @@ import com.kujawski.pocketscores.models.NFLTeam
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.kujawski.pocketscores.TeamAdapter
-
 
 
 class FavoriteTeamActivity : AppCompatActivity() {
@@ -39,14 +37,14 @@ class FavoriteTeamActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val teams = response.body() ?: emptyList()
                     recyclerView.adapter = TeamAdapter(teams) { team ->
-                        // Save selected team to SharedPreferences
+
                         sharedPreferences.edit().putString("FAVORITE_TEAM_ID", team.id).apply()
                     }
                 }
             }
 
             override fun onFailure(call: Call<List<NFLTeam>>, t: Throwable) {
-                // Handle failure
+
             }
         })
     }
