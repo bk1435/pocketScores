@@ -25,15 +25,13 @@ class TeamAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return teams.size
-    }
+    override fun getItemCount(): Int = teams.size
 
-    class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val teamNameTextView: TextView = itemView.findViewById(R.id.teamNameTextView)
 
         fun bind(team: NFLTeam) {
-            teamNameTextView.text = team.name
+            teamNameTextView.text = team.displayName  // Ensure `displayName` exists in NFLTeam
         }
     }
 }

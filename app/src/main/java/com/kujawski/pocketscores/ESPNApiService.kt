@@ -8,7 +8,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ESPNApiService {
-
     @GET("teams")
     fun getNFLTeams(): Call<List<NFLTeam>>
 

@@ -1,6 +1,8 @@
 package com.kujawski.pocketscores.models
 
+import com.google.gson.annotations.SerializedName
+
 data class NFLTeam(
-    val id: String,
-    val name: String
+    @SerializedName("id") val id: String,
+    @SerializedName("displayName") val displayName: String  // Ensure this is present
 )

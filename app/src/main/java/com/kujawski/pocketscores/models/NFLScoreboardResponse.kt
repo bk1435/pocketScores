@@ -4,8 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 data class NFLScoreboardResponse(
     @SerializedName("week")
-    val week: Int,
+    val week: Week?,
     @SerializedName("games")
-    val games: List<NFLGame>
+    val games: List<NFLGame> = emptyList() // Default to empty list if null
 )
 
+data class Week(
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("type")
+    val type: String?
+)

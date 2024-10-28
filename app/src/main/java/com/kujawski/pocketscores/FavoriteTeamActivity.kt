@@ -9,6 +9,8 @@ import com.kujawski.pocketscores.models.NFLTeam
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.kujawski.pocketscores.TeamAdapter
+
 
 
 class FavoriteTeamActivity : AppCompatActivity() {

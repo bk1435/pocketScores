@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">pocketScores</string>
+    <string name="failed_to_load_data">Failed to load data</string>
+    <string name="no_data_available">No data available</string>
+    <string name="network_error">Network error: %1$s</string>
+    <string name="teams_vs">%1$s vs %2$s</string>
+    <string name="score_format">Score: %1$s</string>
+
 </resources>

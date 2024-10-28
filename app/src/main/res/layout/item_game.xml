@@ -1,41 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- res/layout/item_game.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <!-- Game Date -->
     <TextView
         android:id="@+id/gameDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Game Date"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="Date"
+        android:textSize="16sp" />
 
-    <!-- Teams (Home vs Away) -->
     <TextView
         android:id="@+id/teamsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team A vs Team B"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gameDateTextView"/>
+        android:text="Teams"
+        android:textSize="16sp" />
 
-    <!-- Game Score -->
     <TextView
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Score: 0 - 0"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/teamsTextView"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Score"
+        android:textSize="16sp" />
+</LinearLayout>
