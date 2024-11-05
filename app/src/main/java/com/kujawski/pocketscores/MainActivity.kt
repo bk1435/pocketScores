@@ -10,17 +10,21 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var nflDataTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         nflDataTextView = findViewById(R.id.nflDataTextView)
-        fetchNFLScoreboard()
+
+
+        fetchNFLData()
     }
 
-    private fun fetchNFLScoreboard() {
+    private fun fetchNFLData() {
         val apiService = RetrofitInstance.api
         val call = apiService.getNFLScoreboard()
 
@@ -28,10 +32,14 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<NFLScoreboardResponse>, response: Response<NFLScoreboardResponse>) {
                 if (response.isSuccessful) {
                     val nflData = response.body()
-                    Log.d("API Response", "Fetched data: $nflData")
-                    val formattedData = formatNFLData(nflData)
-                    nflDataTextView.text = formattedData
+
+
+                    Log.d("API Raw JSON", "Raw JSON response: $nflData")
+
+
+                    nflDataTextView.text = formatNFLData(nflData)
                 } else {
+                    Log.d("API Response", "Unsuccessful response: ${response.errorBody()?.string()}")
                     nflDataTextView.text = getString(R.string.no_data_available)
                 }
             }
@@ -44,16 +52,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatNFLData(nflData: NFLScoreboardResponse?): String {
-        if (nflData == null || nflData.games.isNullOrEmpty()) {
-            Log.d("Data Formatting", "NFL data is null or games list is empty.")
+
+        if (nflData == null || nflData.events.isNullOrEmpty()) {
+            Log.d("Data Formatting", "NFL data is null or events list is empty.")
             return getString(R.string.no_data_available)
         }
 
-        return nflData.games.joinToString(separator = "\n") { game ->
-            val competition = game.competitions?.firstOrNull()
-            val team1 = competition?.competitors?.getOrNull(0)?.team?.displayName ?: "Unknown Team"
-            val team2 = competition?.competitors?.getOrNull(1)?.team?.displayName ?: "Unknown Team"
-            "$team1 vs $team2"
+
+        return nflData.events.joinToString(separator = "\n") { event ->
+            val competition = event.competitions?.firstOrNull()
+            val homeTeamName = competition?.competitors?.getOrNull(0)?.team?.displayName ?: "N/A"
+            val awayTeamName = competition?.competitors?.getOrNull(1)?.team?.displayName ?: "N/A"
+
+
+            Log.d("Data Formatting", "Game: $homeTeamName vs $awayTeamName")
+            "$homeTeamName vs $awayTeamName"
         }
     }
 }
