@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/item_game.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,20 +8,19 @@
         android:id="@+id/gameDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/teamsTextView"
+        android:id="@+id/gameNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Teams"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/scoreTextView"
+        android:id="@+id/gameScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Score"
-        android:textSize="16sp" />
+        android:textSize="14sp"
+        android:paddingTop="4dp" />
 </LinearLayout>

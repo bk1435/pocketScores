@@ -1,72 +1,70 @@
 package com.kujawski.pocketscores
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.kujawski.pocketscores.models.NFLScoreboardResponse
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kujawski.pocketscores.databinding.ActivityMainBinding
+import com.kujawski.pocketscores.models.ESPNModels
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var nflDataTextView: TextView
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var teamAdapter: TeamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        nflDataTextView = findViewById(R.id.nflDataTextView)
-
-
-        fetchNFLData()
+        // Initialize the RecyclerView and adapter
+        setupRecyclerView()
+        loadTeams()
     }
 
-    private fun fetchNFLData() {
-        val apiService = RetrofitInstance.api
-        val call = apiService.getNFLScoreboard()
+    private fun setupRecyclerView() {
+        teamAdapter = TeamAdapter { team -> saveFavoriteTeam(team) }
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = teamAdapter
+        }
+    }
 
-        call.enqueue(object : Callback<NFLScoreboardResponse> {
-            override fun onResponse(call: Call<NFLScoreboardResponse>, response: Response<NFLScoreboardResponse>) {
+    private fun loadTeams() {
+        RetrofitInstance.apiService.getTeams().enqueue(object : Callback<ESPNModels.ApiResponse> {
+            override fun onResponse(
+                call: Call<ESPNModels.ApiResponse>,
+                response: Response<ESPNModels.ApiResponse>
+            ) {
                 if (response.isSuccessful) {
-                    val nflData = response.body()
+                    val teams = response.body()?.sports?.firstOrNull()?.leagues?.firstOrNull()?.teams?.map { it.team } ?: emptyList()
 
+                    Log.d("MainActivity", "Teams loaded: $teams") // Log the loaded teams
 
-                    Log.d("API Raw JSON", "Raw JSON response: $nflData")
-
-
-                    nflDataTextView.text = formatNFLData(nflData)
+                    if (teams.isNotEmpty()) {
+                        teamAdapter.setTeams(teams) // Set the list of teams to the adapter
+                    } else {
+                        Log.e("MainActivity", "No teams found in response")
+                    }
                 } else {
-                    Log.d("API Response", "Unsuccessful response: ${response.errorBody()?.string()}")
-                    nflDataTextView.text = getString(R.string.no_data_available)
+                    Log.e("MainActivity", "Response unsuccessful: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<NFLScoreboardResponse>, t: Throwable) {
-                Log.e("API Error", "Network error: ${t.localizedMessage}")
-                nflDataTextView.text = getString(R.string.network_error, t.localizedMessage)
+            override fun onFailure(call: Call<ESPNModels.ApiResponse>, t: Throwable) {
+                Log.e("MainActivity", "Failed to load teams: ${t.message}")
             }
         })
     }
 
-    private fun formatNFLData(nflData: NFLScoreboardResponse?): String {
-
-        if (nflData == null || nflData.events.isNullOrEmpty()) {
-            Log.d("Data Formatting", "NFL data is null or events list is empty.")
-            return getString(R.string.no_data_available)
+    private fun saveFavoriteTeam(team: ESPNModels.Team) {
+        val intent = Intent(this, TeamDetailsActivity::class.java).apply {
+            putExtra("team_name", team.name)
         }
-
-
-        return nflData.events.joinToString(separator = "\n") { event ->
-            val competition = event.competitions?.firstOrNull()
-            val homeTeamName = competition?.competitors?.getOrNull(0)?.team?.displayName ?: "N/A"
-            val awayTeamName = competition?.competitors?.getOrNull(1)?.team?.displayName ?: "N/A"
-
-
-            Log.d("Data Formatting", "Game: $homeTeamName vs $awayTeamName")
-            "$homeTeamName vs $awayTeamName"
-        }
+        startActivity(intent)
     }
 }
