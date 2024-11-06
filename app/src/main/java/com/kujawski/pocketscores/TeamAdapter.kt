@@ -15,7 +15,7 @@ class TeamAdapter(private val onItemClicked: (ESPNModels.Team) -> Unit) :
     fun setTeams(newTeams: List<ESPNModels.Team>) {
         teams.clear()
         teams.addAll(newTeams)
-        notifyDataSetChanged() // Notify RecyclerView of data change
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {

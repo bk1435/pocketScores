@@ -19,7 +19,7 @@ class TeamDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_details)
 
-        // Retrieve the team ID and name passed from MainActivity
+
         teamId = intent.getStringExtra("team_id") ?: ""
         teamName = intent.getStringExtra("team_name") ?: ""
 
@@ -47,7 +47,7 @@ class TeamDetailsActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
-                // Handle the failure (log or show error message)
+
             }
         })
     }

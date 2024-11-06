@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the RecyclerView and adapter
+
         setupRecyclerView()
         loadTeams()
     }
@@ -43,10 +43,10 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val teams = response.body()?.sports?.firstOrNull()?.leagues?.firstOrNull()?.teams?.map { it.team } ?: emptyList()
 
-                    Log.d("MainActivity", "Teams loaded: $teams") // Log the loaded teams
+                    Log.d("MainActivity", "Teams loaded: $teams")
 
                     if (teams.isNotEmpty()) {
-                        teamAdapter.setTeams(teams) // Set the list of teams to the adapter
+                        teamAdapter.setTeams(teams)
                     } else {
                         Log.e("MainActivity", "No teams found in response")
                     }

@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/" // Update with correct base URL
+    private const val BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/"
 
     val apiService: ESPNApiService by lazy {
         Retrofit.Builder()
