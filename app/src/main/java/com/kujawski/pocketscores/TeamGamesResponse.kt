@@ -1,5 +1,8 @@
 package com.kujawski.pocketscores
 
+import com.kujawski.pocketscores.models.Game
+import com.kujawski.pocketscores.models.LeagueTeam
+
 data class TeamGamesResponse(
     val events: List<Game>
 )

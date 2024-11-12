@@ -1,17 +1,19 @@
 package com.kujawski.pocketscores
 
-import com.kujawski.pocketscores.models.ESPNModels
+import com.kujawski.pocketscores.models.SportsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ESPNApiService {
-    @GET("scoreboard")
+
+    @GET("sports/football/nfl/scoreboard")
     fun getScoreboard(): Call<NFLScoreboardResponse>
 
-    @GET("teams")
-    fun getTeams(): Call<ESPNModels.ApiResponse>
+    @GET("sports/football/nfl/teams")
+    fun getTeams(): Call<SportsResponse>
 
-    @GET("teams/{team_id}/schedule")
-    fun getTeamGames(@Path("team_id") teamId: String): Call<TeamGamesResponse>
+    // Fetch games for a specific team by team ID
+    @GET("sports/football/nfl/teams/{teamId}/schedule")
+    fun getTeamGames(@Path("teamId") teamId: String): Call<TeamGamesResponse>
 }

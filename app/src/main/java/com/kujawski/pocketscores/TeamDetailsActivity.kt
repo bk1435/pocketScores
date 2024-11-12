@@ -1,7 +1,8 @@
 package com.kujawski.pocketscores
 
 import android.os.Bundle
-import android.widget.TextView
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,42 +13,49 @@ import retrofit2.Response
 class TeamDetailsActivity : AppCompatActivity() {
 
     private lateinit var gamesAdapter: GamesAdapter
-    private lateinit var teamId: String
-    private lateinit var teamName: String
+    private lateinit var apiService: ESPNApiService
+    private var teamId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_details)
 
+        val gamesRecyclerView: RecyclerView = findViewById(R.id.gamesRecyclerView)
+        gamesAdapter = GamesAdapter()
 
-        teamId = intent.getStringExtra("team_id") ?: ""
-        teamName = intent.getStringExtra("team_name") ?: ""
 
-        findViewById<TextView>(R.id.teamNameTextView).text = teamName
+        gamesRecyclerView.layoutManager = LinearLayoutManager(this)
+        gamesRecyclerView.adapter = gamesAdapter
 
-        loadRecentGames()
+        teamId = intent.getStringExtra("TEAM_ID")
+        apiService = RetrofitInstance.api
+
+        teamId?.let { fetchTeamGames(it) }
     }
 
-    private fun loadRecentGames() {
-        val apiService = RetrofitInstance.apiService
+    private fun fetchTeamGames(teamId: String) {
+        Log.d("TeamDetailsActivity", "Fetching games for team ID: $teamId")
 
         apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
-            override fun onResponse(
-                call: Call<TeamGamesResponse>,
-                response: Response<TeamGamesResponse>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    val gamesList = response.body()?.events ?: emptyList()
-                    gamesAdapter = GamesAdapter(gamesList)
-                    findViewById<RecyclerView>(R.id.gamesRecyclerView).apply {
-                        layoutManager = LinearLayoutManager(this@TeamDetailsActivity)
-                        adapter = gamesAdapter
+            override fun onResponse(call: Call<TeamGamesResponse>, response: Response<TeamGamesResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { teamGamesResponse ->
+                        val games = teamGamesResponse.events
+                        Log.d("API_DEBUG", "Games retrieved: ${games.size}")
+                        gamesAdapter.submitList(games)
+                    } ?: run {
+                        Log.e("TeamDetailsActivity", "Response body is null")
+                        Toast.makeText(this@TeamDetailsActivity, "No games data available", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Log.e("TeamDetailsActivity", "API error: ${response.code()} - ${response.message()}")
+                    Toast.makeText(this@TeamDetailsActivity, "Failed to load games", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
-
+                Log.e("TeamDetailsActivity", "Network error: ${t.localizedMessage}")
+                Toast.makeText(this@TeamDetailsActivity, "Failed to load games", Toast.LENGTH_SHORT).show()
             }
         })
     }

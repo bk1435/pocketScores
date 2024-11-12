@@ -1,26 +1,39 @@
+<!-- item_game.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/gameDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:text="Date"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
-        android:id="@+id/gameNameTextView"
+        android:id="@+id/gameOpponentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="Opponent"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/gameScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Score"
         android:textSize="14sp"
-        android:paddingTop="4dp" />
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/gameStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="14sp"/>
+
 </LinearLayout>

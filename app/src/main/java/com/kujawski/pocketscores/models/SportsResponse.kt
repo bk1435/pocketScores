@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.models
 
 data class SportsResponse(
     val sports: List<Sport>
@@ -14,9 +14,4 @@ data class League(
 
 data class TeamWrapper(
     val team: LeagueTeam
-)
-
-data class LeagueTeam(
-    val id: String,
-    val displayName: String
 )

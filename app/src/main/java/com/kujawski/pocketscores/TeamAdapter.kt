@@ -5,22 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.kujawski.pocketscores.models.ESPNModels
+import com.kujawski.pocketscores.models.LeagueTeam
 
-class TeamAdapter(private val onItemClicked: (ESPNModels.Team) -> Unit) :
-    RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
+class TeamAdapter(private val onTeamSelected: (LeagueTeam) -> Unit) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
-    private val teams = mutableListOf<ESPNModels.Team>()
+    private val teams = mutableListOf<LeagueTeam>()
 
-    fun setTeams(newTeams: List<ESPNModels.Team>) {
+    fun submitList(teamsList: List<LeagueTeam>?) {
         teams.clear()
-        teams.addAll(newTeams)
+        if (teamsList != null) {
+            teams.addAll(teamsList)
+        }
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_team, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_team, parent, false)
         return TeamViewHolder(view)
     }
 
@@ -34,9 +34,9 @@ class TeamAdapter(private val onItemClicked: (ESPNModels.Team) -> Unit) :
     inner class TeamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val teamNameTextView: TextView = itemView.findViewById(R.id.teamNameTextView)
 
-        fun bind(team: ESPNModels.Team) {
+        fun bind(team: LeagueTeam) {
             teamNameTextView.text = team.displayName
-            itemView.setOnClickListener { onItemClicked(team) }
+            itemView.setOnClickListener { onTeamSelected(team) }
         }
     }
 }
