@@ -50,7 +50,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                     val awayTeam = competitors[1]
 
 
-                    gameOpponentTextView.text = awayTeam.team.displayName // Display the opponent's team name
+                    gameOpponentTextView.text = awayTeam.team.displayName
 
 
                     val homeScore = homeTeam.score?.value?.toString() ?: "TBD"
