@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -52,9 +54,12 @@ dependencies {
 
 // Jetpack Compose dependencies
     implementation("androidx.compose.ui:ui:1.5.0")
-    implementation("androidx.compose.material3:material3:1.2.0-alpha08") // Material 3 dependency
+    implementation("androidx.compose.material3:material3:1.2.0-alpha08")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
+    implementation("com.google.android.material:material:1.12.0")
 
     // Optional - Compose UI tool for development
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.0")

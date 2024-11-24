@@ -20,4 +20,3 @@ data class Status(
 data class StatusType(
     val description: String
 )
-
