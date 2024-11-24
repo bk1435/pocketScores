@@ -7,9 +7,15 @@ import com.kujawski.pocketscores.models.Score
 import java.lang.reflect.Type
 
 class ScoreDeserializer : JsonDeserializer<Score> {
-    override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?): Score {
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Score {
+        val jsonObject = json.asJsonObject
 
-        val scoreValue = json.asJsonObject.get("value")?.asString?.toIntOrNull()
-        return Score(scoreValue)
+
+        println("Deserializing Score JSON: $jsonObject")
+
+
+        val scoreValue = jsonObject["value"]?.asInt ?: jsonObject["score"]?.asInt
+        return Score(value = scoreValue)
     }
 }
+

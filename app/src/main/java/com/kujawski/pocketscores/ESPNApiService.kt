@@ -16,4 +16,6 @@ interface ESPNApiService {
     // Fetch games for a specific team by team ID
     @GET("sports/football/nfl/teams/{teamId}/schedule")
     fun getTeamGames(@Path("teamId") teamId: String): Call<TeamGamesResponse>
+
+
 }

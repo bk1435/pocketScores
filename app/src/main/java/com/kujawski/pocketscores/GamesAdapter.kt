@@ -40,7 +40,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
             // Set date
             gameDateTextView.text = formatDateTime(game.date)
 
-
             if (game.competitions.isNotEmpty()) {
                 val competition = game.competitions[0]
                 val competitors = competition.competitors
@@ -49,22 +48,23 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                     val homeTeam = competitors[0]
                     val awayTeam = competitors[1]
 
-
+                    // Set opponent name
                     gameOpponentTextView.text = awayTeam.team.displayName
 
+                    // Retrieve and display scores, with logging
+                    val homeScore = if (homeTeam.score?.value != null) homeTeam.score.value.toString() else "TBD"
+                    val awayScore = if (awayTeam.score?.value != null) awayTeam.score.value.toString() else "TBD"
 
-                    val homeScore = homeTeam.score?.value?.toString() ?: "TBD"
-                    val awayScore = awayTeam.score?.value?.toString() ?: "TBD"
+                    println("Home Score: $homeScore, Away Score: $awayScore")  // Logging the scores
 
                     gameScoreTextView.text = "$homeScore - $awayScore"
                 }
 
-
+                // Set game status
                 gameStatusTextView.text = competition.status.type.description
             }
         }
     }
-
 
     private fun formatDateTime(dateTime: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault())
