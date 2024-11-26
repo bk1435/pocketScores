@@ -27,12 +27,7 @@
         </activity>
 
         <!-- Favorite Team Details Activity -->
-        <activity
-            android:name="com.kujawski.pocketscores.ui.activities.TeamDetailsActivity" />
 
-        <!-- Team Selection Activity -->
-        <activity
-            android:name="com.kujawski.pocketscores.ui.activities.TeamSelectionActivity" />
 
         <!-- Fragments (not declared as activities but for clarity in reference paths) -->
         <!-- Fragments are typically not declared in the manifest -->

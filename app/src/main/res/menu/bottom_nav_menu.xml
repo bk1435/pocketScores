@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Team Details menu item -->
+    <item
+        android:id="@+id/teamDetailsFragment"
+        android:icon="@drawable/ic_favorite"
+        android:title="Team Details" />
+
+    <!-- Around the League menu item -->
+    <item
+        android:id="@+id/aroundLeagueFragment"
+        android:icon="@drawable/ic_league"
+        android:title="Around League" />
+
+</menu>

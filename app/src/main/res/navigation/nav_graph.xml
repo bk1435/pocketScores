@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/teamSelectionFragment">
+
+    <!-- Team Selection Fragment -->
+    <fragment
+        android:id="@+id/teamSelectionFragment"
+        android:name="com.kujawski.pocketscores.ui.fragments.TeamSelectionFragment"
+        android:label="Select Team"
+        tools:layout="@layout/fragment_team_selection">
+        <action
+            android:id="@+id/action_teamSelectionFragment_to_teamDetailsFragment"
+            app:destination="@id/teamDetailsFragment" />
+    </fragment>
+
+    <!-- Team Details Fragment -->
+    <fragment
+        android:id="@+id/teamDetailsFragment"
+        android:name="com.kujawski.pocketscores.ui.fragments.TeamDetailsFragment"
+        android:label="Favorite Team"
+        tools:layout="@layout/fragment_team_details">
+        <argument
+            android:name="teamId"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+    <!-- Around the League Fragment -->
+    <fragment
+        android:id="@+id/aroundLeagueFragment"
+        android:name="com.kujawski.pocketscores.ui.fragments.AroundLeagueFragment"
+        android:label="Around the League"
+        tools:layout="@layout/fragment_around_league" />
+</navigation>

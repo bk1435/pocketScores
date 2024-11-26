@@ -1,22 +1,24 @@
 package com.kujawski.pocketscores.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.kujawski.pocketscores.models.Game
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import com.kujawski.pocketscores.R
+import com.kujawski.pocketscores.models.Game
 
 class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 
-    private var gamesList: List<Game> = emptyList()
+    private val gamesList = mutableListOf<Game>()
+    private var favoriteTeamId: String? = null
 
-    fun submitList(games: List<Game>) {
-        gamesList = games
+    fun submitList(games: List<Game>, favoriteTeamId: String) {
+        Log.d("GamesAdapter", "Favorite Team ID: $favoriteTeamId") // Debug log
+        this.favoriteTeamId = favoriteTeamId
+        gamesList.clear()
+        gamesList.addAll(games)
         notifyDataSetChanged()
     }
 
@@ -26,51 +28,67 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
-        holder.bind(gamesList[position])
+        val game = gamesList[position]
+        holder.bind(game, favoriteTeamId)
     }
 
     override fun getItemCount(): Int = gamesList.size
 
-    inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val gameDateTextView: TextView = itemView.findViewById(R.id.gameDateTextView)
-        private val gameOpponentTextView: TextView = itemView.findViewById(R.id.gameOpponentTextView)
-        private val gameScoreTextView: TextView = itemView.findViewById(R.id.gameScoreTextView)
-        private val gameStatusTextView: TextView = itemView.findViewById(R.id.gameStatusTextView)
+    class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val gameTitle: TextView = itemView.findViewById(R.id.game_title)
+        private val gameDate: TextView = itemView.findViewById(R.id.game_date)
+        private val gameScores: TextView = itemView.findViewById(R.id.game_scores)
+        private val gameStatus: TextView = itemView.findViewById(R.id.game_status)
 
-        fun bind(game: Game) {
-            // Set date
-            gameDateTextView.text = formatDateTime(game.date)
+        fun bind(game: Game, favoriteTeamId: String?) {
+            val competitors = game.competitions.firstOrNull()?.competitors ?: emptyList()
 
-            if (game.competitions.isNotEmpty()) {
-                val competition = game.competitions[0]
-                val competitors = competition.competitors
-
-                if (competitors.size == 2) {
-                    val homeTeam = competitors[0]
-                    val awayTeam = competitors[1]
-
-                    // Set opponent name
-                    gameOpponentTextView.text = awayTeam.team.displayName
-
-                    // Retrieve and display scores, with logging
-                    val homeScore = if (homeTeam.score?.value != null) homeTeam.score.value.toString() else "TBD"
-                    val awayScore = if (awayTeam.score?.value != null) awayTeam.score.value.toString() else "TBD"
-
-                    println("Home Score: $homeScore, Away Score: $awayScore")  // Logging the scores
-
-                    gameScoreTextView.text = "$homeScore - $awayScore"
-                }
-
-                // Set game status
-                gameStatusTextView.text = competition.status.type.description
+            if (competitors.isEmpty()) {
+                gameTitle.text = "Incomplete Game Data"
+                gameScores.text = ""
+                gameStatus.text = ""
+                return
             }
-        }
-    }
 
-    private fun formatDateTime(dateTime: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault())
-        val date = inputFormat.parse(dateTime)
-        return outputFormat.format(date ?: Date())
+            competitors.forEach {
+                Log.d("GamesAdapter", "Competitor: ${it.team.displayName}, HomeAway: ${it.homeAway}, TeamID: ${it.team.id}")
+            }
+
+            // Find competitors by their home/away role
+            val homeCompetitor = competitors.find { it.homeAway == "home" }
+            val awayCompetitor = competitors.find { it.homeAway == "away" }
+
+            if (homeCompetitor == null || awayCompetitor == null) {
+                gameTitle.text = "Invalid Game Data"
+                gameScores.text = ""
+                gameStatus.text = ""
+                return
+            }
+
+            val homeTeam = homeCompetitor.team
+            val awayTeam = awayCompetitor.team
+            val homeScore = homeCompetitor.score?.value?.toInt() ?: 0
+            val awayScore = awayCompetitor.score?.value?.toInt() ?: 0
+
+            // Check if the favorite team is home or away
+            val isFavoriteHome = favoriteTeamId == homeTeam.id
+            val isFavoriteAway = favoriteTeamId == awayTeam.id
+
+            // Format game title
+            val title = when {
+                isFavoriteHome -> "${awayTeam.displayName} @ ${homeTeam.displayName}"
+                isFavoriteAway -> "${homeTeam.displayName} @ ${awayTeam.displayName}"
+                else -> "${homeTeam.displayName} vs ${awayTeam.displayName}"
+            }
+
+            // Display scores and status
+            val scores = "$awayScore - $homeScore"
+            val status = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
+
+            gameTitle.text = title
+            gameDate.text = game.date
+            gameScores.text = scores
+            gameStatus.text = status
+        }
     }
 }
