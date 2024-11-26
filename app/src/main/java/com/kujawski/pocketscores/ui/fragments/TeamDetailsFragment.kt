@@ -34,6 +34,11 @@ class TeamDetailsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = gamesAdapter
 
+
+        val bottomNavHeight = resources.getDimensionPixelSize(R.dimen.bottom_navigation_height)
+        recyclerView.setPadding(0, 0, 0, bottomNavHeight)
+        recyclerView.clipToPadding = false
+
         apiService = RetrofitInstance.api
         val teamId = arguments?.getString("teamId") ?: return view
 
@@ -61,3 +66,4 @@ class TeamDetailsFragment : Fragment() {
         return view
     }
 }
+

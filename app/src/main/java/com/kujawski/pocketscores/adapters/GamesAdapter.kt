@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kujawski.pocketscores.R
 import com.kujawski.pocketscores.models.Game
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 
@@ -42,7 +45,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
         fun bind(game: Game) {
             val competitors = game.competitions.firstOrNull()?.competitors ?: emptyList()
 
-            // Handle cases where competitors are missing or incomplete
             if (competitors.size < 2) {
                 gameTitle.text = "Invalid Game Data"
                 gameScores.text = "N/A"
@@ -50,7 +52,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 return
             }
 
-            // Use the homeAway property to determine teams
             val homeCompetitor = competitors.find { it.homeAway == "home" }
             val awayCompetitor = competitors.find { it.homeAway == "away" }
 
@@ -58,7 +59,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 gameTitle.text = "Incomplete Data"
                 gameScores.text = "N/A"
                 gameStatus.text = "N/A"
-                Log.w("GamesAdapter", "Missing home/away data for game on ${game.date}")
                 return
             }
 
@@ -67,13 +67,42 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
             val homeScore = homeCompetitor.score?.value ?: 0
             val awayScore = awayCompetitor.score?.value ?: 0
 
-            // Construct title without altering home/away logic
             val title = "${awayTeam.displayName} @ ${homeTeam.displayName}"
+            val scores = "$awayScore - $homeScore"
+            val status = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
+
+
+            Log.d("GamesAdapter", "Raw date string: ${game.date}")
+
+
+            val formattedDate = formatDate(game.date)
 
             gameTitle.text = title
-            gameDate.text = game.date
-            gameScores.text = "$awayScore - $homeScore"
-            gameStatus.text = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
+            gameDate.text = formattedDate
+            gameScores.text = scores
+            gameStatus.text = status
+        }
+
+        private fun formatDate(dateString: String): String {
+            Log.d("GamesAdapter", "Attempting to parse date: $dateString") // Debug log
+            return try {
+
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault())
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Treat the input as UTC
+
+                val date = inputFormat.parse(dateString)
+                if (date != null) {
+
+                    val outputFormatDate = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+                    val outputFormatTime = SimpleDateFormat("hh:mm a", Locale.getDefault()) // 12-hour format
+                    "${outputFormatDate.format(date)} at ${outputFormatTime.format(date)}"
+                } else {
+                    "Invalid Date"
+                }
+            } catch (e: Exception) {
+                Log.e("GamesAdapter", "Error parsing date: $dateString", e)
+                "Invalid Date"
+            }
         }
     }
 }
