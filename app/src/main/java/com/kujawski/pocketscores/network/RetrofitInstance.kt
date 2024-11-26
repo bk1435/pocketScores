@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.network
 
 import com.google.gson.GsonBuilder
 import com.kujawski.pocketscores.models.Score

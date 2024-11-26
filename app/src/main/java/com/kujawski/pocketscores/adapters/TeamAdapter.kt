@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kujawski.pocketscores.models.LeagueTeam
+import com.kujawski.pocketscores.R
 
 class TeamAdapter(private val onTeamSelected: (LeagueTeam) -> Unit) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 

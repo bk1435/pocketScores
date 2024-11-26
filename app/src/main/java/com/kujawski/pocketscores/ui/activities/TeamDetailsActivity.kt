@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.ui.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.kujawski.pocketscores.adapters.GamesAdapter
+import com.kujawski.pocketscores.network.ESPNApiService
+import com.kujawski.pocketscores.network.RetrofitInstance
+import com.kujawski.pocketscores.models.TeamGamesResponse
+import com.kujawski.pocketscores.R
 
 class TeamDetailsActivity : AppCompatActivity() {
 

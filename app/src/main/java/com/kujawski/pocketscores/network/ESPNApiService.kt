@@ -1,9 +1,11 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.network
 
 import com.kujawski.pocketscores.models.SportsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import com.kujawski.pocketscores.NFLScoreboardResponse
+import com.kujawski.pocketscores.models.TeamGamesResponse
 
 interface ESPNApiService {
 

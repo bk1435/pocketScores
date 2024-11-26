@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +9,7 @@ import com.kujawski.pocketscores.models.Game
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.kujawski.pocketscores.R
 
 class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.kujawski.pocketscores
+package com.kujawski.pocketscores.network
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -18,4 +18,3 @@ class ScoreDeserializer : JsonDeserializer<Score> {
         return Score(value = scoreValue)
     }
 }
-

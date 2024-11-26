@@ -16,7 +16,7 @@
 
         <!-- Main Activity (launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.kujawski.pocketscores.ui.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PocketScores">
@@ -27,14 +27,15 @@
         </activity>
 
         <!-- Favorite Team Details Activity -->
-        <activity android:name=".TeamDetailsActivity" />
+        <activity
+            android:name="com.kujawski.pocketscores.ui.activities.TeamDetailsActivity" />
 
-        <!-- New Activity Declaration -->
-        <activity android:name=".TeamSelectionActivity" />
+        <!-- Team Selection Activity -->
+        <activity
+            android:name="com.kujawski.pocketscores.ui.activities.TeamSelectionActivity" />
 
-        <!-- Fragment Activities -->
-        <activity android:name=".AroundLeagueFragment" />
-
+        <!-- Fragments (not declared as activities but for clarity in reference paths) -->
+        <!-- Fragments are typically not declared in the manifest -->
 
     </application>
 
