@@ -29,36 +29,35 @@ class TeamDetailsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_team_details, container, false)
         recyclerView = view.findViewById(R.id.team_details_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         gamesAdapter = GamesAdapter()
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = gamesAdapter
 
         apiService = RetrofitInstance.api
+        val teamId = arguments?.getString("teamId") ?: return view
 
-        val teamId = arguments?.getString("teamId")
-        if (teamId != null) {
-            fetchTeamGames(teamId)
-        }
-
-        return view
-    }
-
-    private fun fetchTeamGames(teamId: String) {
         apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
-            override fun onResponse(call: Call<TeamGamesResponse>, response: Response<TeamGamesResponse>) {
+            override fun onResponse(
+                call: Call<TeamGamesResponse>,
+                response: Response<TeamGamesResponse>
+            ) {
                 if (response.isSuccessful) {
                     val games = response.body()?.events ?: emptyList()
-                    Log.d("TeamDetailsFragment", "Fetched Games: $games")
+                    games.forEach { game ->
+                        Log.d("TeamDetailsFragment", "Game Data: ${game.competitions.firstOrNull()?.competitors}")
+                    }
                     gamesAdapter.submitList(games, teamId)
                 } else {
-                    Log.e("TeamDetailsFragment", "API Response Error: ${response.errorBody()?.string()}")
+                    Log.e("TeamDetailsFragment", "Failed to fetch games. Code: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
-                Log.e("TeamDetailsFragment", "API Request Failed: ${t.message}")
+                Log.e("TeamDetailsFragment", "API Call Failed: ${t.message}")
             }
         })
+
+        return view
     }
 }

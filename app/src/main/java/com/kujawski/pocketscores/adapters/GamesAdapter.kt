@@ -15,7 +15,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
     private var favoriteTeamId: String? = null
 
     fun submitList(games: List<Game>, favoriteTeamId: String) {
-        Log.d("GamesAdapter", "Favorite Team ID: $favoriteTeamId") // Debug log
         this.favoriteTeamId = favoriteTeamId
         gamesList.clear()
         gamesList.addAll(games)
@@ -29,7 +28,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val game = gamesList[position]
-        holder.bind(game, favoriteTeamId)
+        holder.bind(game)
     }
 
     override fun getItemCount(): Int = gamesList.size
@@ -40,55 +39,41 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
         private val gameScores: TextView = itemView.findViewById(R.id.game_scores)
         private val gameStatus: TextView = itemView.findViewById(R.id.game_status)
 
-        fun bind(game: Game, favoriteTeamId: String?) {
+        fun bind(game: Game) {
             val competitors = game.competitions.firstOrNull()?.competitors ?: emptyList()
 
-            if (competitors.isEmpty()) {
-                gameTitle.text = "Incomplete Game Data"
-                gameScores.text = ""
-                gameStatus.text = ""
+            // Handle cases where competitors are missing or incomplete
+            if (competitors.size < 2) {
+                gameTitle.text = "Invalid Game Data"
+                gameScores.text = "N/A"
+                gameStatus.text = "N/A"
                 return
             }
 
-            competitors.forEach {
-                Log.d("GamesAdapter", "Competitor: ${it.team.displayName}, HomeAway: ${it.homeAway}, TeamID: ${it.team.id}")
-            }
-
-            // Find competitors by their home/away role
+            // Use the homeAway property to determine teams
             val homeCompetitor = competitors.find { it.homeAway == "home" }
             val awayCompetitor = competitors.find { it.homeAway == "away" }
 
             if (homeCompetitor == null || awayCompetitor == null) {
-                gameTitle.text = "Invalid Game Data"
-                gameScores.text = ""
-                gameStatus.text = ""
+                gameTitle.text = "Incomplete Data"
+                gameScores.text = "N/A"
+                gameStatus.text = "N/A"
+                Log.w("GamesAdapter", "Missing home/away data for game on ${game.date}")
                 return
             }
 
             val homeTeam = homeCompetitor.team
             val awayTeam = awayCompetitor.team
-            val homeScore = homeCompetitor.score?.value?.toInt() ?: 0
-            val awayScore = awayCompetitor.score?.value?.toInt() ?: 0
+            val homeScore = homeCompetitor.score?.value ?: 0
+            val awayScore = awayCompetitor.score?.value ?: 0
 
-            // Check if the favorite team is home or away
-            val isFavoriteHome = favoriteTeamId == homeTeam.id
-            val isFavoriteAway = favoriteTeamId == awayTeam.id
-
-            // Format game title
-            val title = when {
-                isFavoriteHome -> "${awayTeam.displayName} @ ${homeTeam.displayName}"
-                isFavoriteAway -> "${homeTeam.displayName} @ ${awayTeam.displayName}"
-                else -> "${homeTeam.displayName} vs ${awayTeam.displayName}"
-            }
-
-            // Display scores and status
-            val scores = "$awayScore - $homeScore"
-            val status = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
+            // Construct title without altering home/away logic
+            val title = "${awayTeam.displayName} @ ${homeTeam.displayName}"
 
             gameTitle.text = title
             gameDate.text = game.date
-            gameScores.text = scores
-            gameStatus.text = status
+            gameScores.text = "$awayScore - $homeScore"
+            gameStatus.text = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
         }
     }
 }
