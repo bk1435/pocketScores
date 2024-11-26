@@ -3,10 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Example RecyclerView for displaying league data -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/around_league_recycler_view"
+        android:id="@+id/weeks_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="100dp"
+    android:clipToPadding="false"
+    android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>
+
