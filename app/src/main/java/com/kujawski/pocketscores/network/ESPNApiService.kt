@@ -17,11 +17,11 @@ interface ESPNApiService {
     @GET("sports/football/nfl/teams")
     fun getTeams(): Call<SportsResponse>
 
-    // Fetch games for a specific team by team ID
+
     @GET("sports/football/nfl/teams/{teamId}/schedule")
     fun getTeamGames(@Path("teamId") teamId: String): Call<TeamGamesResponse>
 
-    @GET("apis/site/v2/sports/football/nfl/scoreboard")
+    @GET("sports/football/nfl/scoreboard")
     fun getGamesForWeek(
         @Query("seasontype") seasonType: Int,
         @Query("week") week: Int,

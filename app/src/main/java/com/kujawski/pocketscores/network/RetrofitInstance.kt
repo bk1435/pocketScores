@@ -1,6 +1,7 @@
 package com.kujawski.pocketscores.network
 
 import com.google.gson.GsonBuilder
+import com.kujawski.pocketscores.models.Game
 import com.kujawski.pocketscores.models.Score
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,6 +12,7 @@ object RetrofitInstance {
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(Score::class.java, ScoreDeserializer())
+        .registerTypeAdapter(Game::class.java, GameDeserializer())
         .create()
 
     val api: ESPNApiService by lazy {

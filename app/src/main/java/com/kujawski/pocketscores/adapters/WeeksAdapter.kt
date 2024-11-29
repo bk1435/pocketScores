@@ -1,17 +1,17 @@
 package com.kujawski.pocketscores.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.kujawski.pocketscores.R
 import com.kujawski.pocketscores.models.Week
+import com.kujawski.pocketscores.ui.fragments.AroundLeagueFragmentDirections
 
 class WeeksAdapter(
-    private val weeks: List<Week>,
-    private val onClick: (Week) -> Unit
+    private val weeks: List<Week>
 ) : RecyclerView.Adapter<WeeksAdapter.WeekViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekViewHolder {
@@ -21,32 +21,19 @@ class WeeksAdapter(
 
     override fun onBindViewHolder(holder: WeekViewHolder, position: Int) {
         val week = weeks[position]
-        Log.d("WeeksAdapter", "Binding week at position $position: ${week.weekNumber}")
-        holder.bind(week, onClick)
+        holder.bind(week)
     }
 
-    override fun getItemCount(): Int {
-        Log.d("WeeksAdapter", "Total items: ${weeks.size}")
-        return weeks.size
-    }
+    override fun getItemCount(): Int = weeks.size
 
-    class WeekViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val weekNumberTextView: TextView = itemView.findViewById(R.id.week_number_text_view)
+    inner class WeekViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val weekTextView: TextView = itemView.findViewById(R.id.textViewWeek)
 
-        fun bind(week: Week, onClick: (Week) -> Unit) {
-            weekNumberTextView.text = when (week.weekNumber) {
-                -4 -> "Wild Card Round"
-                -3 -> "Divisional Round"
-                -2 -> "Conference Round"
-                -1 -> "Super Bowl"
-                else -> "Week ${week.weekNumber}"
-            }
-
-            Log.d("WeeksAdapter", "Label for this week: ${weekNumberTextView.text}")
-
+        fun bind(week: Week) {
+            weekTextView.text = "Week ${week.weekNumber}"
             itemView.setOnClickListener {
-                Log.d("WeeksAdapter", "Clicked on: ${weekNumberTextView.text}")
-                onClick(week)
+                val action = AroundLeagueFragmentDirections.actionAroundLeagueFragmentToWeekDetailsFragment(week.weekNumber)
+                it.findNavController().navigate(action)
             }
         }
     }
