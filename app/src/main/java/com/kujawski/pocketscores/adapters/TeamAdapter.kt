@@ -15,7 +15,7 @@ import com.kujawski.pocketscores.models.LeagueTeam
 class TeamAdapter(private val onClick: (LeagueTeam) -> Unit) :
     ListAdapter<LeagueTeam, TeamAdapter.TeamViewHolder>(TeamDiffCallback()) {
 
-    // ViewHolder for individual team items
+
     class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val teamLogo: ImageView = view.findViewById(R.id.team_logo)
         val teamName: TextView = view.findViewById(R.id.team_name)
@@ -30,7 +30,7 @@ class TeamAdapter(private val onClick: (LeagueTeam) -> Unit) :
         val team = getItem(position)
         holder.teamName.text = team.displayName
 
-        // Load the first logo URL using Glide
+
         val logoUrl = team.logos.firstOrNull()?.href.orEmpty()
         Glide.with(holder.itemView.context)
             .load(logoUrl)

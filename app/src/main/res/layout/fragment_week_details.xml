@@ -11,5 +11,7 @@
         android:id="@+id/recyclerViewGames"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="95dp"
         tools:listitem="@layout/item_game" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.InputStream
 
 class TeamDetailsFragment : Fragment() {
 
@@ -29,6 +28,9 @@ class TeamDetailsFragment : Fragment() {
     private lateinit var apiService: ESPNApiService
     private lateinit var teamLogoImageView: ImageView
     private lateinit var teamNameTextView: TextView
+
+
+    private val teamMap: MutableMap<String, String?> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,9 @@ class TeamDetailsFragment : Fragment() {
         apiService = RetrofitInstance.api
         val teamId = arguments?.getString("teamId") ?: return view
 
+
         loadTeamDetails(teamId)
+
 
         apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
             override fun onResponse(
@@ -62,7 +66,8 @@ class TeamDetailsFragment : Fragment() {
                     games.forEach { game ->
                         Log.d("TeamDetailsFragment", "Game Data: ${game.competitions.firstOrNull()?.competitors}")
                     }
-                    gamesAdapter.submitList(games, teamId)
+
+                    gamesAdapter.submitList(games, favoriteTeamId = teamId, teamMap = teamMap)
                 } else {
                     Log.e("TeamDetailsFragment", "Failed to fetch games. Code: ${response.code()}")
                 }
@@ -77,31 +82,39 @@ class TeamDetailsFragment : Fragment() {
     }
 
     private fun loadTeamDetails(teamId: String) {
-        // Load teams.json from assets
-        val inputStream: InputStream = requireContext().assets.open("teams.json")
-        val json = inputStream.bufferedReader().use { it.readText() }
-        val teamsJson = JSONObject(json)
 
-        // Find the team in the JSON
-        val teams = teamsJson.getJSONArray("sports")
+        val inputStream = requireContext().assets.open("teams.json")
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        val teamsJson = JSONObject(jsonString)
+
+
+        val teamsArray = teamsJson.getJSONArray("sports")
             .getJSONObject(0)
             .getJSONArray("leagues")
             .getJSONObject(0)
             .getJSONArray("teams")
 
-        for (i in 0 until teams.length()) {
-            val team = teams.getJSONObject(i).getJSONObject("team")
-            if (team.getString("id") == teamId) {
-                // Set team name
-                teamNameTextView.text = team.getString("displayName")
 
-                // Load team logo
-                val logoUrl = team.getJSONArray("logos").getJSONObject(0).getString("href")
+        for (i in 0 until teamsArray.length()) {
+            val team = teamsArray.getJSONObject(i).getJSONObject("team")
+            val teamIdFromJson = team.getString("id")
+            val logoUrl = team.getJSONArray("logos").getJSONObject(0).getString("href")
+
+
+            teamMap[teamIdFromJson] = logoUrl
+
+
+            if (teamIdFromJson == teamId) {
+                teamNameTextView.text = team.getString("displayName")
                 Glide.with(this)
                     .load(logoUrl)
                     .into(teamLogoImageView)
-                break
             }
+        }
+
+
+        teamMap.forEach { (id, logo) ->
+            Log.d("TeamDetailsFragment", "Team ID: $id, Logo URL: $logo")
         }
     }
 }
