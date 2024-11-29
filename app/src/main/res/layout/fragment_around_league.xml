@@ -9,8 +9,7 @@
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         android:paddingBottom="100dp"
-    android:clipToPadding="false"
-    android:scrollbars="vertical">
+        android:clipToPadding="false"
+        android:scrollbars="vertical">
     </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>
-
