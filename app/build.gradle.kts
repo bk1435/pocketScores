@@ -3,12 +3,13 @@ plugins {
     id("kotlin-android")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 }
 
 android {
     namespace = "com.kujawski.pocketscores"
 
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.kujawski.pocketscores"
@@ -51,6 +52,13 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.databinding:databinding-runtime:8.7.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    ksp("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("androidx.room:room-runtime:2.5.0")
+    ksp("androidx.room:room-compiler:2.5.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+
 
 // Jetpack Compose dependencies
     implementation("androidx.compose.ui:ui:1.5.0")

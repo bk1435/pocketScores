@@ -3,4 +3,17 @@
     <string name="select_your_team">Select Your Favorite Team</string>
     <string name="team">Team</string>
     <string name="around_the_league">Around the League</string>
+    <string name="game_details">Game Details</string>
+    <string name="loading_stats">Loading stats...</string>
+    <string name="scores_unavailable">Scores unavailable</string>
+    <string name="status_unavailable">Status unavailable</string>
+    <string name="game_title">%1$s vs %2$s</string>
+    <string name="home_team_logo">Home Team Logo</string>
+    <string name="away_team_logo">Away Team Logo</string>
+    <string name="team_logo">Team Logo</string>
+    <string name="favorite_team_logo">Favorite Team Logo</string>
+    <string name="week_text">Week %1$d</string>
+
+
+
 </resources>

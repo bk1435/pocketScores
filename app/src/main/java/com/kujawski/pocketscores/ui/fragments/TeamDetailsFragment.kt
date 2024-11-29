@@ -66,4 +66,3 @@ class TeamDetailsFragment : Fragment() {
         return view
     }
 }
-
