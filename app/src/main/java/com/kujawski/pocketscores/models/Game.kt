@@ -14,7 +14,9 @@ data class Competition(
 
 
 data class Status(
-    val type: StatusType
+    val type: StatusType,
+    val quarter: Int? = null,
+    val timeLeft: String? = null
 )
 
 data class StatusType(

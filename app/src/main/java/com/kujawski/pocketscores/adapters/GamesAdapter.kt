@@ -49,10 +49,11 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
         private val gameStatus: TextView = itemView.findViewById(R.id.game_status)
         private val homeTeamLogo: ImageView = itemView.findViewById(R.id.home_team_logo)
         private val awayTeamLogo: ImageView = itemView.findViewById(R.id.away_team_logo)
+        private val gameQuarter: TextView = itemView.findViewById(R.id.game_quarter)
+        private val timeLeft: TextView = itemView.findViewById(R.id.time_left)
 
         fun bind(game: Game) {
             val competitors = game.competitions.firstOrNull()?.competitors ?: emptyList()
-
 
             if (competitors.size < 2) {
                 gameTitle.text = "Invalid Game Data"
@@ -61,10 +62,8 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 return
             }
 
-
             val homeCompetitor = competitors.find { it.homeAway == "home" }
             val awayCompetitor = competitors.find { it.homeAway == "away" }
-
 
             if (homeCompetitor == null || awayCompetitor == null) {
                 gameTitle.text = "Incomplete Data"
@@ -73,20 +72,16 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 return
             }
 
-
             val homeTeam = homeCompetitor.team
             val awayTeam = awayCompetitor.team
             val homeScore = homeCompetitor.score?.value ?: 0
             val awayScore = awayCompetitor.score?.value ?: 0
 
-
             val title = "${awayTeam.displayName} @ ${homeTeam.displayName}"
             val scores = "$awayScore - $homeScore"
             val status = game.competitions.firstOrNull()?.status?.type?.description ?: "Unknown"
 
-
             val formattedDate = formatDate(game.date)
-
 
             gameTitle.text = title
             gameDate.text = formattedDate
@@ -94,13 +89,23 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
             gameStatus.text = status
 
 
+            val gameQuarterText = game.competitions.firstOrNull()?.status?.quarter?.toString() ?: "Final"
+            val gameTimeLeftText = game.competitions.firstOrNull()?.status?.timeLeft ?: "N/A"
+
+            if (status == "STATUS_IN_PROGRESS") {
+                gameQuarter.text = "Quarter: $gameQuarterText"
+                timeLeft.text = "Time Left: $gameTimeLeftText"
+                gameQuarter.visibility = View.VISIBLE
+                timeLeft.visibility = View.VISIBLE
+            } else {
+
+                gameQuarter.visibility = View.GONE
+                timeLeft.visibility = View.GONE
+            }
+
+
             val homeLogoUrl = teamMap[homeTeam.id]
             val awayLogoUrl = teamMap[awayTeam.id]
-
-
-            Log.d("GamesAdapter", "Home Team Logo URL: $homeLogoUrl")
-            Log.d("GamesAdapter", "Away Team Logo URL: $awayLogoUrl")
-
 
             Glide.with(itemView.context)
                 .load(homeLogoUrl ?: R.drawable.error_logo)
