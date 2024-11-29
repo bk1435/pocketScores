@@ -1,6 +1,7 @@
 package com.kujawski.pocketscores.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ class AroundLeagueFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_around_league, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewWeeks)
@@ -35,17 +36,29 @@ class AroundLeagueFragment : Fragment() {
 
     private fun generateWeeks(): List<Week> {
         val weeks = mutableListOf<Week>()
+
+
         for (i in 1..18) {
-            weeks.add(Week(weekNumber = i))
+            weeks.add(Week(weekNumber = i, label = "Week $i"))
         }
-        weeks.addAll(
-            listOf(
-                Week(weekNumber = -4, label = "Wild Card Round"),
-                Week(weekNumber = -3, label = "Divisional Round"),
-                Week(weekNumber = -2, label = "Conference Round"),
-                Week(weekNumber = -1, label = "Super Bowl")
-            )
+
+
+        val playoffLabels = mapOf(
+            -4 to "Wild Card Round",
+            -3 to "Divisional Round",
+            -2 to "Conference Championships",
+            -1 to "Super Bowl"
         )
+
+        weeks.addAll(
+            playoffLabels.map { (weekNumber, label) ->
+                Week(weekNumber = weekNumber, label = label)
+            }
+        )
+
+
+        weeks.forEach { Log.d("AroundLeagueFragment", "Week ${it.weekNumber}: ${it.label}") }
+
         return weeks
     }
 

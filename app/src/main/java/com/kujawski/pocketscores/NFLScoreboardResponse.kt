@@ -3,7 +3,8 @@ package com.kujawski.pocketscores
 import com.kujawski.pocketscores.models.Competition
 
 data class NFLScoreboardResponse(
-    val events: List<Event>
+    val events: List<Event>,
+    val label: String?
 )
 
 data class Event(

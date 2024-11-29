@@ -1,5 +1,6 @@
 package com.kujawski.pocketscores.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,11 +31,14 @@ class WeeksAdapter(
         private val weekTextView: TextView = itemView.findViewById(R.id.textViewWeek)
 
         fun bind(week: Week) {
-            weekTextView.text = "Week ${week.weekNumber}"
+            Log.d("WeeksAdapter", "Binding Week: ${week.weekNumber}, Label: ${week.label}")
+            weekTextView.text = week.label
             itemView.setOnClickListener {
-                val action = AroundLeagueFragmentDirections.actionAroundLeagueFragmentToWeekDetailsFragment(week.weekNumber)
+                val action = AroundLeagueFragmentDirections
+                    .actionAroundLeagueFragmentToWeekDetailsFragment(week.weekNumber)
                 it.findNavController().navigate(action)
             }
         }
+
     }
 }

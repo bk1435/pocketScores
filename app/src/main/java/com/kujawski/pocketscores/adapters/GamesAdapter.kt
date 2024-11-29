@@ -84,17 +84,17 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
         }
 
         private fun formatDate(dateString: String): String {
-            Log.d("GamesAdapter", "Attempting to parse date: $dateString") // Debug log
+            Log.d("GamesAdapter", "Attempting to parse date: $dateString")
             return try {
 
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault())
-                inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Treat the input as UTC
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
                 val date = inputFormat.parse(dateString)
                 if (date != null) {
 
                     val outputFormatDate = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-                    val outputFormatTime = SimpleDateFormat("hh:mm a", Locale.getDefault()) // 12-hour format
+                    val outputFormatTime = SimpleDateFormat("hh:mm a", Locale.getDefault())
                     "${outputFormatDate.format(date)} at ${outputFormatTime.format(date)}"
                 } else {
                     "Invalid Date"

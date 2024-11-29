@@ -13,22 +13,18 @@ import kotlinx.coroutines.withContext
 
 class WeekDetailsViewModel : ViewModel() {
 
-
     private val _games = MutableLiveData<List<Game>>()
     val games: LiveData<List<Game>> get() = _games
-
 
     fun loadGamesForWeek(weekNumber: Int) {
         viewModelScope.launch {
             try {
-
                 val response = withContext(Dispatchers.IO) {
                     RetrofitInstance.api.getGamesForWeek(
-                        seasonType = 2, // Regular season
+                        seasonType = 2,
                         week = weekNumber
                     ).execute()
                 }
-
 
                 if (response.isSuccessful) {
                     val events = response.body()?.events ?: emptyList()
@@ -44,18 +40,27 @@ class WeekDetailsViewModel : ViewModel() {
                     }
 
 
+                    val correctLabel = when (weekNumber) {
+                        -4 -> "Wild Card Round"
+                        -3 -> "Divisional Round"
+                        -2 -> "Conference Championships"
+                        -1 -> "Super Bowl"
+                        else -> response.body()?.label ?: "Week $weekNumber"
+                    }
+
+                    Log.d("WeekDetailsViewModel", "Week Label: $correctLabel")
+
+
                     _games.postValue(games)
                 } else {
-
-                    val error = response.errorBody()?.string()
-                    Log.e("WeekDetailsViewModel", "Error: $error")
+                    Log.e("WeekDetailsViewModel", "Error: ${response.errorBody()?.string()}")
                     _games.postValue(emptyList())
                 }
             } catch (e: Exception) {
-
                 Log.e("WeekDetailsViewModel", "Exception occurred", e)
                 _games.postValue(emptyList())
             }
         }
     }
+
 }

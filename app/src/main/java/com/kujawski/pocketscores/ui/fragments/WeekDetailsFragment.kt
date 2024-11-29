@@ -40,7 +40,7 @@ class WeekDetailsFragment : Fragment() {
             return view
         }
 
-        // Observe games data
+
         viewModel.games.observe(viewLifecycleOwner) { games ->
             if (games.isNullOrEmpty()) {
                 Toast.makeText(context, "No games found for this week", Toast.LENGTH_SHORT).show()
