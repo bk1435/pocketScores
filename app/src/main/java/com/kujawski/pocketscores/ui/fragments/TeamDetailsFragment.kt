@@ -1,6 +1,8 @@
 package com.kujawski.pocketscores.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +30,38 @@ class TeamDetailsFragment : Fragment() {
     private lateinit var apiService: ESPNApiService
     private lateinit var teamLogoImageView: ImageView
     private lateinit var teamNameTextView: TextView
-
+    private lateinit var teamId: String
 
     private val teamMap: MutableMap<String, String?> = mutableMapOf()
+
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val updateInterval: Long = 30000
+
+
+    private val updateRunnable = object : Runnable {
+        override fun run() {
+            Log.d("Polling", "Polling for team games...")
+            apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
+                override fun onResponse(
+                    call: Call<TeamGamesResponse>,
+                    response: Response<TeamGamesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val games = response.body()?.events ?: emptyList()
+                        gamesAdapter.submitList(games, favoriteTeamId = teamId, teamMap = teamMap)
+                    } else {
+                        Log.e("TeamDetailsFragment", "Failed to fetch games. Code: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
+                    Log.e("TeamDetailsFragment", "API Call Failed: ${t.message}")
+                }
+            })
+            handler.postDelayed(this, updateInterval)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,43 +81,28 @@ class TeamDetailsFragment : Fragment() {
         recyclerView.clipToPadding = false
 
         apiService = RetrofitInstance.api
-        val teamId = arguments?.getString("teamId") ?: return view
 
+        teamId = arguments?.getString("teamId") ?: return view
 
         loadTeamDetails(teamId)
+        fetchInitialGames(teamId)
 
 
-        apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
-            override fun onResponse(
-                call: Call<TeamGamesResponse>,
-                response: Response<TeamGamesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val games = response.body()?.events ?: emptyList()
-                    games.forEach { game ->
-                        Log.d("TeamDetailsFragment", "Game Data: ${game.competitions.firstOrNull()?.competitors}")
-                    }
-
-                    gamesAdapter.submitList(games, favoriteTeamId = teamId, teamMap = teamMap)
-                } else {
-                    Log.e("TeamDetailsFragment", "Failed to fetch games. Code: ${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
-                Log.e("TeamDetailsFragment", "API Call Failed: ${t.message}")
-            }
-        })
+        handler.post(updateRunnable)
 
         return view
     }
 
-    private fun loadTeamDetails(teamId: String) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(updateRunnable)
+        Log.d("Polling", "Polling stopped")
+    }
 
+    private fun loadTeamDetails(teamId: String) {
         val inputStream = requireContext().assets.open("teams.json")
         val jsonString = inputStream.bufferedReader().use { it.readText() }
         val teamsJson = JSONObject(jsonString)
-
 
         val teamsArray = teamsJson.getJSONArray("sports")
             .getJSONObject(0)
@@ -94,12 +110,10 @@ class TeamDetailsFragment : Fragment() {
             .getJSONObject(0)
             .getJSONArray("teams")
 
-
         for (i in 0 until teamsArray.length()) {
             val team = teamsArray.getJSONObject(i).getJSONObject("team")
             val teamIdFromJson = team.getString("id")
             val logoUrl = team.getJSONArray("logos").getJSONObject(0).getString("href")
-
 
             teamMap[teamIdFromJson] = logoUrl
 
@@ -112,9 +126,28 @@ class TeamDetailsFragment : Fragment() {
             }
         }
 
-
         teamMap.forEach { (id, logo) ->
             Log.d("TeamDetailsFragment", "Team ID: $id, Logo URL: $logo")
         }
+    }
+
+    private fun fetchInitialGames(teamId: String) {
+        apiService.getTeamGames(teamId).enqueue(object : Callback<TeamGamesResponse> {
+            override fun onResponse(
+                call: Call<TeamGamesResponse>,
+                response: Response<TeamGamesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val games = response.body()?.events ?: emptyList()
+                    gamesAdapter.submitList(games, favoriteTeamId = teamId, teamMap = teamMap)
+                } else {
+                    Log.e("TeamDetailsFragment", "Failed to fetch games. Code: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TeamGamesResponse>, t: Throwable) {
+                Log.e("TeamDetailsFragment", "API Call Failed: ${t.message}")
+            }
+        })
     }
 }
