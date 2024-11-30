@@ -24,4 +24,14 @@
     <string name="unknown_date">Unknown Date</string>
     <string name="scores_not_available">Scores not available</string>
     <string name="no_status_available">No status available</string>
+    <string name="game_date">Game Date</string>
+    <string name="game_scores">Game Scores</string>
+    <string name="game_status">Game Status</string>
+    <string name="quarter">Quarter</string>
+    <string name="time_left">Time Left</string>
+    <string name="away_team_city">New York</string>
+    <string name="away_team_name">Giants</string>
+
+
+
 </resources>
