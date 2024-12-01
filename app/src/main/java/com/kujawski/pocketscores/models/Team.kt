@@ -1,14 +1,17 @@
 package com.kujawski.pocketscores.models
 
+import android.os.Parcelable
 import android.util.Log
+import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 
+@Parcelize
 data class Team(
     val name: String,
     val id: String,
     val displayName: String,
     val logoUrl: String? = null
-) {
+) : Parcelable {
     companion object {
         fun parseTeamsJson(jsonString: String): List<Team> {
             val teamList = mutableListOf<Team>()
@@ -22,9 +25,7 @@ data class Team(
                 val id = teamObj.getString("id")
                 val displayName = teamObj.getString("displayName")
 
-
                 Log.d("TeamParser", "Team JSON: ${teamObj.toString()}")
-
 
                 val logoUrl = try {
                     val logosArray = teamObj.getJSONArray("logos")

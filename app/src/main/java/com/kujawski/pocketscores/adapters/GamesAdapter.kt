@@ -1,5 +1,6 @@
 package com.kujawski.pocketscores.adapters
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kujawski.pocketscores.R
 import com.kujawski.pocketscores.models.Game
+import com.kujawski.pocketscores.ui.activities.StatLeadersActivity
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -19,7 +21,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
     private val gamesList = mutableListOf<Game>()
     private var favoriteTeamId: String? = null
     private var teamMap: Map<String, String?> = mutableMapOf()
-
 
     fun submitList(games: List<Game>, favoriteTeamId: String, teamMap: Map<String, String?>) {
         this.favoriteTeamId = favoriteTeamId
@@ -37,10 +38,19 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val game = gamesList[position]
         holder.bind(game)
+
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, StatLeadersActivity::class.java).apply {
+                putExtra("GAME_DATA", game)
+            }
+            Log.d("GamesAdapter", "Starting StatLeadersActivity with Game data: $game")
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = gamesList.size
-
 
     class GameViewHolder(itemView: View, private val teamMap: Map<String, String?>) : RecyclerView.ViewHolder(itemView) {
         private val gameTitle: TextView = itemView.findViewById(R.id.game_title)
@@ -88,7 +98,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
             gameScores.text = scores
             gameStatus.text = status
 
-
             val gameQuarterText = game.competitions.firstOrNull()?.status?.quarter?.toString() ?: "Final"
             val gameTimeLeftText = game.competitions.firstOrNull()?.status?.timeLeft ?: "N/A"
 
@@ -98,11 +107,9 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 gameQuarter.visibility = View.VISIBLE
                 timeLeft.visibility = View.VISIBLE
             } else {
-
                 gameQuarter.visibility = View.GONE
                 timeLeft.visibility = View.GONE
             }
-
 
             val homeLogoUrl = teamMap[homeTeam.id]
             val awayLogoUrl = teamMap[awayTeam.id]
@@ -117,7 +124,6 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
                 .placeholder(R.drawable.placeholder_logo)
                 .into(awayTeamLogo)
         }
-
 
         private fun formatDate(dateString: String): String {
             return try {

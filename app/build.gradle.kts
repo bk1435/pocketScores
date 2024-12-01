@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -60,7 +62,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")
     implementation("com.google.code.gson:gson:2.10.1")
-
+    
 
 
 // Jetpack Compose dependencies
@@ -80,6 +82,8 @@ dependencies {
 
     implementation(libs.okhttp)
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
 
     // Retrofit for network calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

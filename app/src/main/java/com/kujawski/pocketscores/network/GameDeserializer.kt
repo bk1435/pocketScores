@@ -15,9 +15,8 @@ class GameDeserializer : JsonDeserializer<Game> {
     ): Game {
         val jsonObject = json.asJsonObject
 
-
         val date = jsonObject.get("date").asString
-
+        val eventId = jsonObject.get("id").asString
 
         val competitionsArray = jsonObject.getAsJsonArray("competitions")
         val competitions = competitionsArray.map { competitionElement ->
@@ -26,7 +25,8 @@ class GameDeserializer : JsonDeserializer<Game> {
 
         return Game(
             date = date,
-            competitions = competitions
+            competitions = competitions,
+            eventId = eventId
         )
     }
 }

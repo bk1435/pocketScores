@@ -1,24 +1,12 @@
 package com.kujawski.pocketscores.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Game(
     val date: String,
-    @SerializedName("competitions") val competitions: List<Competition>
-)
-
-data class Competition(
-    val competitors: List<Competitor>,
-    val status: Status
-)
-
-
-data class Status(
-    val type: StatusType,
-    val quarter: Int? = null,
-    val timeLeft: String? = null
-)
-
-data class StatusType(
-    val description: String
-)
+    @SerializedName("competitions") val competitions: List<Competition> = emptyList(),
+    val eventId: String
+) : Parcelable

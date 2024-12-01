@@ -27,7 +27,7 @@
         </activity>
 
         <!-- Favorite Team Details Activity -->
-
+        <activity android:name=".ui.activities.StatLeadersActivity" />
 
         <!-- Fragments (not declared as activities but for clarity in reference paths) -->
         <!-- Fragments are typically not declared in the manifest -->

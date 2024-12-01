@@ -33,12 +33,16 @@ class WeekDetailsViewModel : ViewModel() {
 
                     val games = events.map { event ->
                         val competition = event.competitions.firstOrNull()
+
+
+                        val eventId = competition?.id ?: ""
+
                         Game(
                             date = event.date,
-                            competitions = listOfNotNull(competition)
+                            competitions = listOfNotNull(competition),
+                            eventId = eventId
                         )
                     }
-
 
                     val correctLabel = when (weekNumber) {
                         -4 -> "Wild Card Round"
@@ -49,7 +53,6 @@ class WeekDetailsViewModel : ViewModel() {
                     }
 
                     Log.d("WeekDetailsViewModel", "Week Label: $correctLabel")
-
 
                     _games.postValue(games)
                 } else {

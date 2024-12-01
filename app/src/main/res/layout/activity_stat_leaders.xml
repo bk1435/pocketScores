@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Progress bar shown while loading data -->
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <!-- Title for the Stat Leaders section -->
+        <TextView
+            android:id="@+id/statLeadersTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Game Stat Leaders"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+        <!-- Home Team Stat Leaders -->
+        <TextView
+            android:id="@+id/homeTeamStatLeadersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/statLeadersTitle"
+            android:layout_marginTop="16dp"
+            android:text="Home Team Stat Leaders"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/homeTeamPassingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeTeamStatLeadersLabel"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/homeTeamRushingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeTeamPassingLeaderTextView"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/homeTeamReceivingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeTeamRushingLeaderTextView"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+
+        <!-- Away Team Stat Leaders -->
+        <TextView
+            android:id="@+id/awayTeamStatLeadersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeTeamReceivingLeaderTextView"
+            android:layout_marginTop="24dp"
+            android:text="Away Team Stat Leaders"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/awayTeamPassingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/awayTeamStatLeadersLabel"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/awayTeamRushingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/awayTeamPassingLeaderTextView"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/awayTeamReceivingLeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/awayTeamRushingLeaderTextView"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Loading..."
+            android:padding="8dp" />
+    </RelativeLayout>
+</ScrollView>

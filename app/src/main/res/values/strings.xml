@@ -31,6 +31,15 @@
     <string name="time_left">Time Left</string>
     <string name="away_team_city">New York</string>
     <string name="away_team_name">Giants</string>
+    <string name="passing_leader_template">Passing Leader: %1$s\nStats: %2$s</string>
+    <string name="rushing_leader_template">Rushing Leader: %1$s\nStats: %2$s</string>
+    <string name="receiving_leader_template">Receiving Leader: %1$s\nStats: %2$s</string>
+    <string name="no_passing_leader">No passing leader data available.</string>
+    <string name="no_rushing_leader">No rushing leader data available.</string>
+    <string name="no_receiving_leader">No receiving leader data available.</string>
+    <string name="passing_leader">Passing Leader: %1$s - Stats: %2$s</string>
+    <string name="rushing_leader">Rushing Leader: %1$s - Stats: %2$s</string>
+    <string name="receiving_leader">Receiving Leader: %1$s - Stats: %2$s</string>
 
 
 
