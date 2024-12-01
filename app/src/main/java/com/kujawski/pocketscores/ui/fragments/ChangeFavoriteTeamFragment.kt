@@ -20,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TeamSelectionFragment : Fragment() {
+class ChangeFavoriteTeamFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var teamAdapter: TeamAdapter
@@ -32,8 +32,8 @@ class TeamSelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_team_selection, container, false)
-        recyclerView = view.findViewById(R.id.team_selection_recycler_view)
+        val view = inflater.inflate(R.layout.fragment_change_favorite_team, container, false)
+        recyclerView = view.findViewById(R.id.change_favorite_team_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         teamAdapter = TeamAdapter { team: LeagueTeam -> onTeamSelected(team) }
@@ -42,15 +42,7 @@ class TeamSelectionFragment : Fragment() {
         sharedPreferences = requireActivity().getSharedPreferences("prefs", AppCompatActivity.MODE_PRIVATE)
         apiService = RetrofitInstance.api
 
-
-        val favoriteTeamId = sharedPreferences.getString("FAVORITE_TEAM_ID", null)
-        if (favoriteTeamId != null) {
-
-            navigateToTeamDetails(favoriteTeamId)
-        } else {
-
-            fetchTeams()
-        }
+        fetchTeams()
 
         return view
     }
@@ -85,11 +77,7 @@ class TeamSelectionFragment : Fragment() {
         sharedPreferences.edit().putString("FAVORITE_TEAM_ID", team.id).apply()
 
 
-        navigateToTeamDetails(team.id)
-    }
-
-    private fun navigateToTeamDetails(teamId: String) {
-        val action = TeamSelectionFragmentDirections.actionTeamSelectionFragmentToTeamDetailsFragment(teamId)
+        val action = ChangeFavoriteTeamFragmentDirections.actionChangeFavoriteTeamFragmentToTeamDetailsFragment(team.id)
         findNavController().navigate(action)
     }
 }

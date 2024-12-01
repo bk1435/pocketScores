@@ -34,7 +34,6 @@
         android:name="com.kujawski.pocketscores.ui.fragments.AroundLeagueFragment"
         android:label="Around the League"
         tools:layout="@layout/fragment_around_league">
-        <!-- Added action -->
         <action
             android:id="@+id/action_aroundLeagueFragment_to_weekDetailsFragment"
             app:destination="@id/weekDetailsFragment" />
@@ -49,6 +48,22 @@
         <argument
             android:name="weekNumber"
             app:argType="integer" />
+    </fragment>
+
+    <!-- Change Favorite Team Fragment -->
+    <fragment
+        android:id="@+id/changeFavoriteTeamFragment"
+        android:name="com.kujawski.pocketscores.ui.fragments.ChangeFavoriteTeamFragment"
+        android:label="Change Favorite Team"
+        tools:layout="@layout/fragment_change_favorite_team">
+        <action
+            android:id="@+id/action_changeFavoriteTeamFragment_to_teamDetailsFragment"
+            app:destination="@id/teamDetailsFragment">
+            <argument
+                android:name="teamId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
 
 </navigation>

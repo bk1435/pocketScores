@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <!-- Progress bar shown while loading data -->
         <ProgressBar
@@ -15,18 +15,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Title for the Stat Leaders section -->
         <TextView
             android:id="@+id/statLeadersTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Game Stat Leaders"
+            android:text="@string/game_stat_leaders"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:padding="8dp" />
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/loadingProgressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Home Team Stat Leaders Section -->
         <TextView
@@ -34,108 +41,140 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Home Team Stat Leaders"
+            android:text="@string/home_team_stat_leaders"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="8dp" />
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/statLeadersTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
+            android:id="@+id/homeTeamStatLeadersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/homeTeamStatLeadersLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Home Team Passing Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/homeTeamPassingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamPassingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamPassingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
+            <!-- Home Team Rushing Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/homeTeamRushingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamRushingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamRushingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
+            <!-- Home Team Receiving Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/homeTeamReceivingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamReceivingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/homeTeamReceivingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -145,109 +184,141 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Away Team Stat Leaders"
+            android:text="@string/away_team_stat_leaders"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="8dp" />
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/homeTeamStatLeadersLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
+            android:id="@+id/awayTeamStatLeadersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/awayTeamStatLeadersLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Away Team Passing Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/awayTeamPassingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamPassingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamPassingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
+            <!-- Away Team Rushing Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/awayTeamRushingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamRushingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamRushingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
+            <!-- Away Team Receiving Leader -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/awayTeamReceivingLeaderImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_default_player"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamReceivingLeaderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player Name"
+                    android:text="@string/player_name"
                     android:textSize="16sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/awayTeamReceivingLeaderStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textSize="14sp"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

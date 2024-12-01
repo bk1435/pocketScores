@@ -46,7 +46,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 }
 
@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.compose.compiler:compiler:1.5.14")
     
 
 
