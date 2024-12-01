@@ -3,11 +3,13 @@ package com.kujawski.pocketscores.ui.activities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.kujawski.pocketscores.R
 import com.kujawski.pocketscores.models.Athlete
 import com.kujawski.pocketscores.models.Game
@@ -20,14 +22,26 @@ import kotlinx.coroutines.launch
 class StatLeadersActivity : AppCompatActivity() {
 
 
-    private lateinit var homeTeamPassingLeaderTextView: TextView
-    private lateinit var homeTeamRushingLeaderTextView: TextView
-    private lateinit var homeTeamReceivingLeaderTextView: TextView
+    private lateinit var homeTeamPassingLeaderImage: ImageView
+    private lateinit var homeTeamPassingLeaderName: TextView
+    private lateinit var homeTeamPassingLeaderStats: TextView
+    private lateinit var homeTeamRushingLeaderImage: ImageView
+    private lateinit var homeTeamRushingLeaderName: TextView
+    private lateinit var homeTeamRushingLeaderStats: TextView
+    private lateinit var homeTeamReceivingLeaderImage: ImageView
+    private lateinit var homeTeamReceivingLeaderName: TextView
+    private lateinit var homeTeamReceivingLeaderStats: TextView
 
 
-    private lateinit var awayTeamPassingLeaderTextView: TextView
-    private lateinit var awayTeamRushingLeaderTextView: TextView
-    private lateinit var awayTeamReceivingLeaderTextView: TextView
+    private lateinit var awayTeamPassingLeaderImage: ImageView
+    private lateinit var awayTeamPassingLeaderName: TextView
+    private lateinit var awayTeamPassingLeaderStats: TextView
+    private lateinit var awayTeamRushingLeaderImage: ImageView
+    private lateinit var awayTeamRushingLeaderName: TextView
+    private lateinit var awayTeamRushingLeaderStats: TextView
+    private lateinit var awayTeamReceivingLeaderImage: ImageView
+    private lateinit var awayTeamReceivingLeaderName: TextView
+    private lateinit var awayTeamReceivingLeaderStats: TextView
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var repository: GameRepository
@@ -37,19 +51,29 @@ class StatLeadersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_stat_leaders)
 
 
-        homeTeamPassingLeaderTextView = findViewById(R.id.homeTeamPassingLeaderTextView)
-        homeTeamRushingLeaderTextView = findViewById(R.id.homeTeamRushingLeaderTextView)
-        homeTeamReceivingLeaderTextView = findViewById(R.id.homeTeamReceivingLeaderTextView)
+        homeTeamPassingLeaderImage = findViewById(R.id.homeTeamPassingLeaderImage)
+        homeTeamPassingLeaderName = findViewById(R.id.homeTeamPassingLeaderName)
+        homeTeamPassingLeaderStats = findViewById(R.id.homeTeamPassingLeaderStats)
+        homeTeamRushingLeaderImage = findViewById(R.id.homeTeamRushingLeaderImage)
+        homeTeamRushingLeaderName = findViewById(R.id.homeTeamRushingLeaderName)
+        homeTeamRushingLeaderStats = findViewById(R.id.homeTeamRushingLeaderStats)
+        homeTeamReceivingLeaderImage = findViewById(R.id.homeTeamReceivingLeaderImage)
+        homeTeamReceivingLeaderName = findViewById(R.id.homeTeamReceivingLeaderName)
+        homeTeamReceivingLeaderStats = findViewById(R.id.homeTeamReceivingLeaderStats)
 
-        awayTeamPassingLeaderTextView = findViewById(R.id.awayTeamPassingLeaderTextView)
-        awayTeamRushingLeaderTextView = findViewById(R.id.awayTeamRushingLeaderTextView)
-        awayTeamReceivingLeaderTextView = findViewById(R.id.awayTeamReceivingLeaderTextView)
+        awayTeamPassingLeaderImage = findViewById(R.id.awayTeamPassingLeaderImage)
+        awayTeamPassingLeaderName = findViewById(R.id.awayTeamPassingLeaderName)
+        awayTeamPassingLeaderStats = findViewById(R.id.awayTeamPassingLeaderStats)
+        awayTeamRushingLeaderImage = findViewById(R.id.awayTeamRushingLeaderImage)
+        awayTeamRushingLeaderName = findViewById(R.id.awayTeamRushingLeaderName)
+        awayTeamRushingLeaderStats = findViewById(R.id.awayTeamRushingLeaderStats)
+        awayTeamReceivingLeaderImage = findViewById(R.id.awayTeamReceivingLeaderImage)
+        awayTeamReceivingLeaderName = findViewById(R.id.awayTeamReceivingLeaderName)
+        awayTeamReceivingLeaderStats = findViewById(R.id.awayTeamReceivingLeaderStats)
 
         loadingProgressBar = findViewById(R.id.loadingProgressBar)
 
-
         repository = GameRepository()
-
 
         val game: Game? = intent.getParcelableExtra("GAME_DATA")
         if (game != null) {
@@ -105,8 +129,6 @@ class StatLeadersActivity : AppCompatActivity() {
         val playersStats = gameSummary.boxscore?.players ?: return
         val teamStats = gameSummary.boxscore?.teams ?: return
 
-        Log.d("StatLeadersActivity", "Number of player stats received: ${playersStats.size}")
-
         if (teamStats.size != 2) {
             Log.e("StatLeadersActivity", "Unexpected number of teams in teamStats: ${teamStats.size}")
             return
@@ -115,83 +137,42 @@ class StatLeadersActivity : AppCompatActivity() {
         val homeTeam = teamStats[0].team
         val awayTeam = teamStats[1].team
 
-        Log.d("StatLeadersActivity", "Home Team: ${homeTeam.displayName}")
-        Log.d("StatLeadersActivity", "Away Team: ${awayTeam.displayName}")
-
         val homeTeamStats = playersStats.filter { it.team.id == homeTeam.id }
         val awayTeamStats = playersStats.filter { it.team.id == awayTeam.id }
 
-        Log.d("StatLeadersActivity", "Number of home team stats: ${homeTeamStats.size}")
-        Log.d("StatLeadersActivity", "Number of away team stats: ${awayTeamStats.size}")
+        displayTeamStatLeaders(homeTeamStats, homeTeamPassingLeaderImage, homeTeamPassingLeaderName, homeTeamPassingLeaderStats, "passing")
+        displayTeamStatLeaders(homeTeamStats, homeTeamRushingLeaderImage, homeTeamRushingLeaderName, homeTeamRushingLeaderStats, "rushing")
+        displayTeamStatLeaders(homeTeamStats, homeTeamReceivingLeaderImage, homeTeamReceivingLeaderName, homeTeamReceivingLeaderStats, "receiving")
 
-
-        displayTeamStatLeaders(
-            homeTeamStats,
-            homeTeamPassingLeaderTextView,
-            homeTeamRushingLeaderTextView,
-            homeTeamReceivingLeaderTextView
-        )
-
-
-        displayTeamStatLeaders(
-            awayTeamStats,
-            awayTeamPassingLeaderTextView,
-            awayTeamRushingLeaderTextView,
-            awayTeamReceivingLeaderTextView
-        )
+        displayTeamStatLeaders(awayTeamStats, awayTeamPassingLeaderImage, awayTeamPassingLeaderName, awayTeamPassingLeaderStats, "passing")
+        displayTeamStatLeaders(awayTeamStats, awayTeamRushingLeaderImage, awayTeamRushingLeaderName, awayTeamRushingLeaderStats, "rushing")
+        displayTeamStatLeaders(awayTeamStats, awayTeamReceivingLeaderImage, awayTeamReceivingLeaderName, awayTeamReceivingLeaderStats, "receiving")
     }
 
-    private fun displayTeamStatLeaders(
-        teamStats: List<PlayerStats>,
-        passingLeaderTextView: TextView,
-        rushingLeaderTextView: TextView,
-        receivingLeaderTextView: TextView
-    ) {
-        val passingLeader = findLeader(teamStats, "passing")
-        passingLeader?.let { athlete ->
-            passingLeaderTextView.text = "Passing Leader: ${athlete.athlete.displayName}\n" +
-                    "Stats: ${formatStats(athlete.stats)}"
-        } ?: run {
-            passingLeaderTextView.text = getString(R.string.no_passing_leader)
-        }
+    private fun displayTeamStatLeaders(teamStats: List<PlayerStats>, imageView: ImageView, nameView: TextView, statsView: TextView, statName: String) {
+        val leader = findLeader(teamStats, statName)
+        leader?.let { athlete ->
+            val headshotUrl = "https://a.espncdn.com/i/headshots/nfl/players/full/${athlete.athlete.id}.png"
 
-        val rushingLeader = findLeader(teamStats, "rushing")
-        rushingLeader?.let { athlete ->
-            rushingLeaderTextView.text = "Rushing Leader: ${athlete.athlete.displayName}\n" +
-                    "Stats: ${formatStats(athlete.stats)}"
-        } ?: run {
-            rushingLeaderTextView.text = getString(R.string.no_rushing_leader)
-        }
 
-        val receivingLeader = findLeader(teamStats, "receiving")
-        receivingLeader?.let { athlete ->
-            receivingLeaderTextView.text = "Receiving Leader: ${athlete.athlete.displayName}\n" +
-                    "Stats: ${formatStats(athlete.stats)}"
+            Glide.with(this)
+                .load(headshotUrl)
+                .placeholder(R.drawable.placeholder_image)
+                .into(imageView)
+
+            nameView.text = athlete.athlete.displayName
+            statsView.text = formatStats(athlete.stats)
         } ?: run {
-            receivingLeaderTextView.text = getString(R.string.no_receiving_leader)
+            nameView.text = getString(R.string.no_passing_leader)
+            statsView.text = ""
         }
     }
 
     private fun findLeader(playersStats: List<PlayerStats>, statName: String): Athlete? {
-        var leader: Athlete? = null
-        var highestValue = 0
-
-        for (playerStats in playersStats) {
-            val stat = playerStats.statistics.find { it.name.equals(statName, ignoreCase = true) }
-            if (stat != null) {
-                val athlete = stat.athletes.firstOrNull()
-                if (athlete != null) {
-
-                    val statValue = athlete.stats.getOrNull(1)?.toIntOrNull() ?: 0
-                    if (statValue > highestValue) {
-                        highestValue = statValue
-                        leader = athlete
-                    }
-                }
-            }
-        }
-
-        return leader
+        return playersStats.flatMap { it.statistics }
+            .filter { it.name.equals(statName, ignoreCase = true) }
+            .flatMap { it.athletes }
+            .maxByOrNull { it.stats.getOrNull(1)?.toIntOrNull() ?: 0 }
     }
 
     private fun formatStats(stats: List<String>): String {
@@ -201,4 +182,3 @@ class StatLeadersActivity : AppCompatActivity() {
         }.joinToString(separator = ", ")
     }
 }
-
